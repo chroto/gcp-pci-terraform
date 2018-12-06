@@ -18,7 +18,7 @@ provider "google" {
 }
 
 variable "project_name" {
-  default = "pci-dss"
+  default = "dev-pci-dss-demo"
 }
 
 variable "region" {
