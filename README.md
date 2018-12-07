@@ -125,27 +125,29 @@ The instructions can be found [here](forseti/README.md)
 
 ## Architecture
 ![architecture diagram](diagrams/PCIterraform.png)
+- Org Level sink
 - PCI Shared VPC
   * VPC peering with Non-PCI Shared VPC
   * PCI Firewall allows inbound ssh
   * Cloud Armor
     * security policy: only allow traffic from a range of ip addresses
   * In Scope CDE Project
-    * 1 GCE instance is deployed which has access to Cloud SQL in the Out of Scope Project
+    * 1 GCE instance is deployed which has access to Cloud SQL
     * Attach Cloud Armor policy to GCE instance
     * DLP API is enabled
+    * Cloud SQL (mysql)
+    * Project Level sink with a filter GCE
 - Non-PCI Shared VPC
   * VPC peering with PCI Shared VPC
   * Non-PCI Firewall allows inbound ssh and http
   * Out of Scope Project
     * 1 GCE instance is deployed which has access to Cloud SQL in the Out of Scope Project
-    * Cloud SQL (mysql)
-  * Stackdriver Project
+- Logging Project
     * GCS bucket
-    * Project Level sink with a filter PCI web instance
-  * Forseti Project
-    * Creates Forseti service account and permissions
-    * Installs Forseti
+- MGMT Shared VPC
+    * Forseti Project
+      * Creates Forseti service account and permissions
+      * Installs Forseti
 
 ## TODO
 - Add TF project & service account set-up to this doc
