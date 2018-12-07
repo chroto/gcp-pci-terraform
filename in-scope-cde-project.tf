@@ -32,6 +32,8 @@ resource "google_project_services" "in_scope_cde" {
     "compute.googleapis.com",
     "oslogin.googleapis.com",
     "dlp.googleapis.com",
+    "sqladmin.googleapis.com",
+    "sql-component.googleapis.com",
   ]
 }
 
