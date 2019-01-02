@@ -110,6 +110,8 @@ export GOOGLE_APPLICATION_CREDENTIALS=${TF_CREDS}
 export GOOGLE_PROJECT=${TF_ADMIN}
 ```
 
+Edit the vars.tf file and modify the default values to meet your environment.
+
 ### do some terraform!
 - `terraform init` to get the plugins
 - `terraform plan` to see the infrastructure plan
