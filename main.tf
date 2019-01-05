@@ -5,11 +5,21 @@ module "pci-shared-vpc-project" {
   project_name    = "pci-shared-vpc"
 }
 
+module "pci-xpc-host" {
+  source          = "./modules/network/xpc/host"
+  host_project    = "${module.pci-shared-vpc-project.project_id}"
+}
+
 module "nonpci-shared-vpc-project" {
   source          = "./modules/project"
   org_id          = "${var.org_id}"
   billing_account = "${var.billing_account}"
   project_name    = "nonpci-shared-vpc"
+}
+
+module "nonpci-xpc-host" {
+  source          = "./modules/network/xpc/host"
+  host_project    = "${module.nonpci-shared-vpc-project.project_id}"
 }
 
 module "in-scope-gstock-project" {
@@ -29,6 +39,12 @@ module "in-scope-gstock-project" {
   ]
 }
 
+module "in-scope-gstock-vpc" {
+  source          = "./modules/network/xpc/service"
+  host_project    = "${module.pci-shared-vpc-project.project_id}"
+  service_project = "${module.in-scope-gstock-project.project_id}"
+}
+
 module "out-scope-gstock-project" {
   source          = "./modules/project"
   org_id          = "${var.org_id}"
@@ -38,5 +54,12 @@ module "out-scope-gstock-project" {
     "compute.googleapis.com",
     "oslogin.googleapis.com",
     "cloudkms.googleapis.com",
-    "cloudbuild.googleapis.com"
+    "cloudbuild.googleapis.com",
+  ]
+}
+
+module "out-scope-gstock-vpc" {
+  source          = "./modules/network/xpc/service"
+  host_project    = "${module.nonpci-shared-vpc-project.project_id}"
+  service_project = "${module.out-scope-gstock-project.project_id}"
 }

@@ -27,7 +27,7 @@ resource "random_id" "id" {
   byte_length = 4
 }
 
-resource "google_project" "example_project" {
+resource "google_project" "my_project" {
   name            = "${var.project_name}"
   project_id      = "${var.project_name}-${random_id.id.hex}"
   billing_account = "${var.billing_account}"
@@ -35,11 +35,10 @@ resource "google_project" "example_project" {
 }
 
 resource "google_project_services" "services" {
-  project = "${google_project.example_project.project_id}"
-
-  services = "${var.services}" 
+  project = "${google_project.my_project.project_id}"
+  services = "${var.services}"
 }
 
 output "project_id" {
-  value = "${google_project.example_project.project_id}"
+  value = "${google_project.my_project.project_id}"
 }
