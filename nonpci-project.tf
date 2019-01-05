@@ -13,25 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-resource "random_id" "nonpci_id" {
-  byte_length = 8
-}
-
-resource "google_project" "nonpci_shared" {
-  name            = "nonpci-${var.project_name}"
-  project_id      = "nonpci-${random_id.pci_id.hex}"
-  billing_account = "${var.billing_account}"
-  org_id          = "${var.org_id}"
-}
-
-resource "google_project_services" "nonpci_shared" {
-  project = "${google_project.nonpci_shared.project_id}"
-
-  services = [
-    "compute.googleapis.com",
-    "oslogin.googleapis.com",
-  ]
-}
 
 # Enable shared VPC hosting in the host project.
 resource "google_compute_shared_vpc_host_project" "nonpci_shared" {

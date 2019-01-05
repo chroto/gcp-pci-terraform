@@ -18,7 +18,7 @@ provider "google" {
 }
 
 variable "project_name" {
-  default = ""
+  default = "cedar"
 }
 
 variable "region" {

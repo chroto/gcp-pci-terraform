@@ -13,28 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-# PCI application project
-resource "random_id" "random" {
-  byte_length = 8
-}
-
-resource "google_project" "out_of_scope" {
-  name            = "out-of-scope-${var.project_name}"
-  project_id      = "out-scope-cde-${random_id.random.hex}"
-  billing_account = "${var.billing_account}"
-  org_id          = "${var.org_id}"
-}
-
-resource "google_project_services" "out_of_scope" {
-  project = "${google_project.out_of_scope.project_id}"
-
-  services = [
-    "compute.googleapis.com",
-    "oslogin.googleapis.com",
-    "sqladmin.googleapis.com",
-    "sql-component.googleapis.com",
-  ]
-}
 
 resource "google_compute_shared_vpc_service_project" "out_of_scope" {
   host_project    = "${google_project.nonpci_shared.project_id}"
