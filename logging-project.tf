@@ -13,23 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-resource "google_project" "logging" {
-  name            = "logging-${var.project_name}"
-  project_id      = "logging-${random_id.pci_id.hex}"
-  billing_account = "${var.billing_account}"
-  org_id          = "${var.org_id}"
-}
-
-resource "google_project_services" "logging" {
-  project = "${google_project.logging.project_id}"
-
-  services = [
-    "compute.googleapis.com",
-    "oslogin.googleapis.com",
-    "pubsub.googleapis.com"
-  ]
-}
-
 
 resource "google_storage_bucket" "log_bucket" {
   name    = "logging-bucket-${var.project_name}-${random_id.pci_id.hex}"

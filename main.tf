@@ -63,3 +63,28 @@ module "out-scope-gstock-vpc" {
   host_project    = "${module.nonpci-shared-vpc-project.project_id}"
   service_project = "${module.out-scope-gstock-project.project_id}"
 }
+
+module "mgmt-project" {
+  source          = "./modules/project"
+  org_id          = "${var.org_id}"
+  billing_account = "${var.billing_account}"
+  project_name    = "mgmt"
+}
+
+module "mgmt-vpc" {
+  source          = "./modules/network/xpc/service"
+  host_project    = "${module.mgmt-shared-vpc-project.project_id}"
+  service_project = "${module.out-scope-gstock-project.project_id}"
+}
+
+module "logging-project" {
+  source          = "./modules/project"
+  org_id          = "${var.org_id}"
+  billing_account = "${var.billing_account}"
+  project_name    = "logging"
+  services        = [
+    "compute.googleapis.com",
+    "oslogin.googleapis.com",
+    "pubsub.googleapis.com"
+  ]
+}
