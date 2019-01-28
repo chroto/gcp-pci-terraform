@@ -5,6 +5,14 @@ module "pci-shared-vpc-project" {
   project_name    = "pci-shared-vpc"
 }
 
+module "pci-network" {
+  source          = "./modules/network/subnetwork"
+  host_project    = "${module.pci-shared-vpc-project.project_id}"
+  subnet          = "10.2.0.0/20"
+  name            = "pci"
+  region          = "${var.region}"
+}
+
 module "pci-xpc-host" {
   source          = "./modules/network/xpc/host"
   host_project    = "${module.pci-shared-vpc-project.project_id}"
@@ -15,6 +23,14 @@ module "nonpci-shared-vpc-project" {
   org_id          = "${var.org_id}"
   billing_account = "${var.billing_account}"
   project_name    = "nonpci-shared-vpc"
+}
+
+module "pci-network" {
+  source          = "./modules/network/subnetwork"
+  host_project    = "${module.nonpci-shared-vpc-project.project_id}"
+  subnet          = "10.30.0.0/20"
+  name            = "nonpci"
+  region          = "${var.region}"
 }
 
 module "nonpci-xpc-host" {
@@ -64,17 +80,19 @@ module "out-scope-gstock-vpc" {
   service_project = "${module.out-scope-gstock-project.project_id}"
 }
 
-module "mgmt-project" {
+module "mgmt-shared-vpc-project" {
   source          = "./modules/project"
   org_id          = "${var.org_id}"
   billing_account = "${var.billing_account}"
-  project_name    = "mgmt"
+  project_name    = "mgmt-shared-vpc"
 }
 
-module "mgmt-vpc" {
-  source          = "./modules/network/xpc/service"
+module "mgmt-network" {
+  source          = "./modules/network/subnetwork"
   host_project    = "${module.mgmt-shared-vpc-project.project_id}"
-  service_project = "${module.out-scope-gstock-project.project_id}"
+  subnet          = "10.100.0.0/20"
+  name            = "mgmt"
+  region          = "${var.region}"
 }
 
 module "logging-project" {
